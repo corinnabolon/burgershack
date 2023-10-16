@@ -9,6 +9,7 @@ export class BurgersController extends BaseController {
       .get("", this.getBurgers)
       .post("", this.createBurger)
       .delete("/:burgerId", this.removeBurger)
+      .put("/:burgerId", this.updateBurger)
   }
 
 
@@ -42,6 +43,20 @@ export class BurgersController extends BaseController {
       await burgersService.destroyBurger(burgerId)
 
       response.send(`The ${foundBurger.name} has been removed from the menu.`)
+    } catch (error) {
+      next(error)
+    }
+  }
+
+  async updateBurger(request, response, next) {
+    try {
+      const burgerId = request.params.burgerId
+      let foundBurger = fakeDb.burgers.find(burger => burger.id == burgerId)
+      const burgerData = request.body
+
+      await burgersService.updateBurger(burgerData, burgerId)
+
+      response.send(`The ${foundBurger.name} has been updated.`)
     } catch (error) {
       next(error)
     }

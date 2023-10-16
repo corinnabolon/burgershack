@@ -36,6 +36,19 @@ class BurgersService {
     fakeDb.burgers.splice(burgerIndex, 1)
   }
 
+  async updateBurger(burgerData, burgerId) {
+    const burgerIndex = fakeDb.burgers.findIndex(burger => burger.id == burgerId)
+
+    if (burgerIndex == -1) {
+      throw new BadRequest(`Invalid ID: ${burgerId}`)
+    }
+
+    const updatedBurger = new Burger(burgerData)
+    fakeDb.burgers.splice(burgerIndex, 1, updatedBurger)
+
+    return updatedBurger
+  }
+
 }
 
 
